@@ -141,11 +141,11 @@ function Base.typed_hvcat(t::Tensor{<:Any,N,ipos}, alt::Tuple, i...) where {N,ip
 end
 
 using TensorCore
-export tensor, ⊗
+export ⊗
 
 function TensorCore.tensor(t::Tensor{<:Any,N,ipos}, s::Tensor{<:Any,M,jpos}) where {N,ipos,M,jpos}
     ts = tensor(parent(t), parent(s))
-    ijpos = IndexPos{N+M}((ipos.x << M) | jpos.x)
+    ijpos = IndexPos{N+M}((ipos.x | jpos.x << N))
     Tensor{eltype(ts), N+M, ijpos, typeof(ts)}(ts)
 end
 
